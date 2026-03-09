@@ -10,9 +10,8 @@
 /////////////////////////////////////////////////////////////////////////////////////
 // Change History
 // Date ------- Developer -- Description
-// 2026-03-02 - Jorge -      Test
+// 2026-03-02 -  Jorge  -    Created Program entry point for EmpDB application.
 //                           
-//
 // 2026-03-02 - Michael -    
 //                           
 //

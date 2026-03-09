@@ -10,9 +10,12 @@
 /////////////////////////////////////////////////////////////////////////////////////
 // Change History
 // Date ------- Developer -- Description
-// 2026-03-02 - Jorge -      Test
-//                           
+// 2026-03-02 -  Jorge  -    Imported CommissionEmployee class structure from Dietel
+//                           book example
 //
+// 2026-03-02 -  Jorge  -    Updated constructor and ToString to include email address
+//                           property from Employee base
+//                              
 // 2026-03-02 - Michael -    
 //                           
 //
@@ -31,9 +34,9 @@ namespace EmpDB
 
         // five-parameter constructor
         public CommissionEmployee(string firstName, string lastName,
-           string socialSecurityNumber, decimal grossSales,
+           string socialSecurityNumber, string emailAddress, decimal grossSales,
            decimal commissionRate)
-           : base(firstName, lastName, socialSecurityNumber)
+           : base(firstName, lastName, socialSecurityNumber, emailAddress)
         {
             GrossSales = grossSales; // validates gross sales
             CommissionRate = commissionRate; // validates commission rate

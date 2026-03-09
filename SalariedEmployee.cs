@@ -10,9 +10,12 @@
 /////////////////////////////////////////////////////////////////////////////////////
 // Change History
 // Date ------- Developer -- Description
-// 2026-03-02 - Jorge -      Test
+// 2026-03-02 -  Jorge  -    Imported SalariedEmployee class structure from Deitel
+//                           book example
 //                           
-//
+// 2026-03-02 -  Jorge  -    Updated constructor and ToString to include email address
+//                           property from Employee base
+//                              
 // 2026-03-02 - Michael -    
 //                           
 //
@@ -31,8 +34,8 @@ namespace EmpDB
 
         // four-parameter constructor
         public SalariedEmployee(string firstName, string lastName,
-           string socialSecurityNumber, decimal weeklySalary)
-           : base(firstName, lastName, socialSecurityNumber)
+           string socialSecurityNumber, string emailAddress, decimal weeklySalary)
+           : base(firstName, lastName, socialSecurityNumber, emailAddress)
         {
             WeeklySalary = weeklySalary; // validate salary via property
         }

@@ -10,8 +10,11 @@
 /////////////////////////////////////////////////////////////////////////////////////
 // Change History
 // Date ------- Developer -- Description
-// 2026-03-02 - Jorge -      Test
-//                           
+// 2026-03-02 -  Jorge  -    Imported Employee base class structure from Deitel book
+//                           example
+//
+// 2026-03-08 -  Jorge  -    Added EmailAddress property to Employee class and updated
+//                           constructor and ToString                         
 //
 // 2026-03-02 - Michael -    
 //                           
@@ -29,19 +32,23 @@ namespace EmpDB
         public string FirstName { get; }
         public string LastName { get; }
         public string SocialSecurityNumber { get; }
+        public string EmailAddress { get; }
 
         // three-parameter constructor
         public Employee(string firstName, string lastName,
-           string socialSecurityNumber)
+           string socialSecurityNumber, string emailAddress)
         {
             FirstName = firstName;
             LastName = lastName;
             SocialSecurityNumber = socialSecurityNumber;
+            EmailAddress = emailAddress;
         }
 
         // return string representation of Employee object, using properties
         public override string ToString() => $"{FirstName} {LastName}\n" +
-           $"social security number: {SocialSecurityNumber}";
+           $"social security number: {SocialSecurityNumber}" +
+            $"email address: {EmailAddress}";
+
 
         // abstract method overridden by derived classes
         public abstract decimal Earnings(); // no implementation here

@@ -10,9 +10,12 @@
 /////////////////////////////////////////////////////////////////////////////////////
 // Change History
 // Date ------- Developer -- Description
-// 2026-03-02 - Jorge -      Test
+// 2026-03-02 -  Jorge  -    Imported HourleyEmployee class structure from Dietel
+//                           book example                           
 //                           
-//
+// 2026-03-02 -  Jorge  -    Updated constructor and ToString to include email address
+//                           property from Employee base
+//                                                     
 // 2026-03-02 - Michael -    
 //                           
 //
@@ -31,9 +34,9 @@ namespace EmpDB
 
         // five-parameter constructor
         public HourlyEmployee(string firstName, string lastName,
-           string socialSecurityNumber, decimal hourlyWage,
+           string socialSecurityNumber, string emailAddress, decimal hourlyWage,
            decimal hoursWorked)
-           : base(firstName, lastName, socialSecurityNumber)
+           : base(firstName, lastName, socialSecurityNumber, emailAddress)
         {
             Wage = hourlyWage; // validate hourly wage 
             Hours = hoursWorked; // validate hours worked 

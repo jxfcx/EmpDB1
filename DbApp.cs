@@ -13,6 +13,16 @@
 // 2026-03-02 -  Jorge  -    Created DBApp class as the main application class for
 //                           the EmpDB project.                         
 //
+// 2026-03-08 -  Jorge  -    Added List<Employee> to store employee objects in memory
+//                           and serve as the database for the application.
+//
+// 2026-03-08 -  Jorge  -    Added constructor to read and load employee data from
+//                           an input file at startup.
+//                           
+// 2026-03-08 -  Jorge  -    Implemented ReadEmployeeDataFromInputFile method to
+//                           create Employee objects from the file data and add them
+//                           to the employee list.      
+//
 // 2026-03-02 - Michael -    Test 3
 //                           
 //

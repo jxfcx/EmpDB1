@@ -29,8 +29,8 @@ namespace EmpDB
 {
     public class CommissionEmployee : Employee
     {
-        private decimal grossSales; // gross weekly sales
-        private decimal commissionRate; // commission percentage
+        private decimal grossSales { get; set; }// gross weekly sales
+        private decimal commissionRate { get; set; } // commission percentage
 
         // five-parameter constructor
         public CommissionEmployee(string firstName, string lastName,

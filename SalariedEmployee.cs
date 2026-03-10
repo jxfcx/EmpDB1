@@ -61,12 +61,35 @@ namespace EmpDB
         // calculate earnings; override abstract method Earnings in Employee
         public override decimal Earnings() => WeeklySalary;
 
-        // return string representation of SalariedEmployee object
-        public override string ToString() =>
-           $"salaried employee: {base.ToString()}\n" +
-           $"weekly salary: {WeeklySalary:C}";
+        //// return string representation of SalariedEmployee object
+        //public override string ToString() =>
+        //   $"salaried employee: {base.ToString()}\n" +
+        //   $"weekly salary: {WeeklySalary:C}";
 
-        
+        // Friendly/pretty output statement for the object data - for display to the user
+        public override string ToString()
+        {
+            // Declare a string to "build" using the data from the emp obj
+            string str = base.ToString();
+            // Formats Tuitioncredit as currency for readability
+            str += $"weekly salary: {WeeklySalary:C}";
+
+            // Now return the string
+            return str;
+        }
+
+        // Prints the raw data info to the file for persistent storing
+        public override string ToStringForOutputFile()
+        {
+            // Declare a string to "build" using the data from the emp obj
+            string str = this.GetType().Name + "\n";
+            str += base.ToStringForOutputFile() + "\n";
+            // Saves tuition credit as a fixed point for output file.
+            str += $"weekly salary: {WeeklySalary:C}";
+
+            // Now return the string
+            return str;
+        }
 
     }
 }

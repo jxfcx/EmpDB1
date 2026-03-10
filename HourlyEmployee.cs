@@ -93,10 +93,38 @@ namespace EmpDB
             }
         }
 
-        // return string representation of HourlyEmployee object
-        public override string ToString() =>
-           $"hourly employee: {base.ToString()}\n" +
-           $"hourly wage: {Wage:C}\nhours worked: {Hours:F2}";
+        //// return string representation of HourlyEmployee object
+        //public override string ToString() =>
+        //   $"hourly employee: {base.ToString()}\n" +
+        //   $"hourly wage: {Wage:C}\nhours worked: {Hours:F2}";
+
+        // Friendly/pretty output statement for the object data - for display to the user
+        public override string ToString()
+        {
+            // Declare a string to "build" using the data from the emp obj
+            string str = base.ToString();
+            // Formats Tuitioncredit as currency for readability
+            str += $" Hourly Wage:{Wage:C}\n";
+            str += $"Hours Worked:{Hours:C}\n";
+
+            // Now return the string
+            return str;
+        }
+
+        // Prints the raw data info to the file for persistent storing
+        public override string ToStringForOutputFile()
+        {
+            // Declare a string to "build" using the data from the emp obj
+            string str = this.GetType().Name + "\n";
+            str += base.ToStringForOutputFile() + "\n";
+            // Saves tuition credit as a fixed point for output file.
+            str += $" Hourly Wage:{Wage:C}\n";
+            str += $"Hours Worked:{Hours:C}\n";
+
+            // Now return the string
+            return str;
+        }
+
     }
 }
 

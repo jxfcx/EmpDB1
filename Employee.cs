@@ -62,7 +62,7 @@ namespace EmpDB
             str += $" Type:{this.GetType().Name}\n";   // will show employee type
             str += $"First:{FirstName}\n";
             str += $" Last:{LastName}\n";
-            str += $"  SSN:{SocialSecurityNumber:F2}\n";
+            str += $"  SSN:{SocialSecurityNumber}\n";
             str += $"Email:{EmailAddress}\n";
 
             // now return the string
@@ -72,10 +72,10 @@ namespace EmpDB
         {
             // declare a string to "build" using the data from the emp obj
             string str = "\n*********** Employee Record ***********\n";
-            str += $" Type:{this.GetType().Name}\n";   // will show employee
+            str += $" Type:{this.GetType().Name}\n";   // will show employee type
             str += $"First:{FirstName}\n";
             str += $" Last:{LastName}\n";
-            str += $"  SSN:{SocialSecurityNumber:F2}\n";
+            str += $"  SSN:{SocialSecurityNumber}\n";
             str += $"Email:{EmailAddress}\n";
 
             // now return the string

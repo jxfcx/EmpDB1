@@ -46,7 +46,7 @@ namespace EmpDB
 
         // return string representation of Employee object, using properties
         public override string ToString() => $"{FirstName} {LastName}\n" +
-           $"social security number: {SocialSecurityNumber}" +
+           $"social security number: {SocialSecurityNumber}\n" +
             $"email address: {EmailAddress}";
 
 

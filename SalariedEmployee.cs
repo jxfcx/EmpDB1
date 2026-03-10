@@ -66,6 +66,9 @@ namespace EmpDB
         public override string ToString() =>
            $"salaried employee: {base.ToString()}\n" +
            $"weekly salary: {WeeklySalary:C}";
+
+        
+
     }
 }
 

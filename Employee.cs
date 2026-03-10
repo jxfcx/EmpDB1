@@ -29,29 +29,58 @@ namespace EmpDB
 {
     public abstract class Employee
     {
-        public string FirstName { get; }
-        public string LastName { get; }
-        public string SocialSecurityNumber { get; }
-        public string EmailAddress { get; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string SocialSecurityNumber { get; set;  }
+        public string EmailAddress { get; set; }
 
         // three-parameter constructor
         public Employee(string firstName, string lastName,
-           string socialSecurityNumber, string emailAddress)
+           string ssn, string email)
         {
             FirstName = firstName;
             LastName = lastName;
-            SocialSecurityNumber = socialSecurityNumber;
-            EmailAddress = emailAddress;
+            SocialSecurityNumber = ssn;
+            EmailAddress = email;
         }
 
         // return string representation of Employee object, using properties
-        public override string ToString() => $"{FirstName} {LastName}\n" +
-           $"social security number: {SocialSecurityNumber}" +
-            $"email address: {EmailAddress}";
+        //public override string ToString() => $"{FirstName} {LastName}\n" +
+        //   $"social security number: {SocialSecurityNumber}\n" +
+        //    $"email address: {EmailAddress}";
 
 
         // abstract method overridden by derived classes
         public abstract decimal Earnings(); // no implementation here
+
+        // OUTPUT section - ways to get the data from the database
+        // back to the user
+        public override string ToString()
+        {
+            // declare a string to "build" using the data from the emp obj
+            string str = "\n*********** Employee Record ***********\n";
+            str += $" Type:{this.GetType().Name}\n";   // will show employee type
+            str += $"First:{FirstName}\n";
+            str += $" Last:{LastName}\n";
+            str += $"  SSN:{SocialSecurityNumber:F2}\n";
+            str += $"Email:{EmailAddress}\n";
+
+            // now return the string
+            return str;
+        }
+        public virtual string ToStringForOutputFile()
+        {
+            // declare a string to "build" using the data from the emp obj
+            string str = "\n*********** Employee Record ***********\n";
+            str += $" Type:{this.GetType().Name}\n";   // will show employee
+            str += $"First:{FirstName}\n";
+            str += $" Last:{LastName}\n";
+            str += $"  SSN:{SocialSecurityNumber:F2}\n";
+            str += $"Email:{EmailAddress}\n";
+
+            // now return the string
+            return str;
+        }
     }
 }
 

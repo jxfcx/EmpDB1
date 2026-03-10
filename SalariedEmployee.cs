@@ -30,8 +30,7 @@ namespace EmpDB
 {
     public class SalariedEmployee : Employee
     {
-        private decimal weeklySalary;
-
+        private decimal weeklySalary { get; set; }
         // four-parameter constructor
         public SalariedEmployee(string firstName, string lastName,
            string socialSecurityNumber, string emailAddress, decimal weeklySalary)
@@ -66,6 +65,9 @@ namespace EmpDB
         public override string ToString() =>
            $"salaried employee: {base.ToString()}\n" +
            $"weekly salary: {WeeklySalary:C}";
+
+        
+
     }
 }
 

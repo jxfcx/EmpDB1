@@ -29,8 +29,8 @@ namespace EmpDB
 {
     public class HourlyEmployee : Employee
     {
-        private decimal wage; // wage per hour
-        private decimal hours; // hours worked for the week
+        private decimal wage { get; set; } // wage per hour
+        private decimal hours { get; set; } // hours worked for the week
 
         // five-parameter constructor
         public HourlyEmployee(string firstName, string lastName,

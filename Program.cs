@@ -27,12 +27,13 @@ namespace EmpDB
 {
     internal class Program
     {
+        // constant flag to turn debugging on and off easily
+        public const bool _DEBUG_MODE_ = false;
         static void Main(string[] args)
         {
             // Create the database application instance and start the main menu loop.
             DbApp db = new DbApp(); // There will only ever be one of these
-            //db.GoDatabase();
+            db.GoDatabase();
         }
     }
-
 }

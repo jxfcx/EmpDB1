@@ -30,7 +30,7 @@ namespace EmpDB
 {
     public class BasePlusCommissionEmployee : CommissionEmployee
     {
-        private decimal baseSalary; // base salary per week
+        private decimal baseSalary { get; set; } // base salary per week
 
         // six-parameter constructor
         public BasePlusCommissionEmployee(string firstName, string lastName,

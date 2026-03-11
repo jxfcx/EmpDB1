@@ -1,7 +1,7 @@
 ﻿/////////////////////////////////////////////////////////////////////////////////////
 // TINFO 200 B, Winter 2026
 // UWTacoma SET, Jorge Francisco-Chavez, Michael Caroll
-// 2026-03-02  - ComissionEmployee.cs
+// 2026-03-02  - CommissionEmployee.cs
 //
 // Description - 
 //
@@ -84,10 +84,35 @@ namespace EmpDB
         public override decimal Earnings() => CommissionRate * GrossSales;
 
         // return string representation of CommissionEmployee object
-        public override string ToString() =>
-           $"commission employee: {base.ToString()}\n" +
-           $"gross sales: {GrossSales:C}\n" +
-           $"commission rate: {CommissionRate:F2}";
+        //public override string ToString() =>
+        //   $"commission employee: {base.ToString()}\n" +
+        //   $"gross sales: {GrossSales:C}\n" +
+        //   $"commission rate: {CommissionRate:F2}";
+
+        public override string ToString()
+        {
+            // Declare a string to "build" using the data from the emp obj
+            string str = base.ToString();
+            // Formats Tuitioncredit as currency for readability
+            str += $"Gross sales: {GrossSales:C}\n";
+            str += $"Commission Rate: {CommissionRate:F2}\n";
+
+            // Now return the string
+            return str;
+        }
+
+        // Prints the raw data info to the file for persistent storing
+        public override string ToStringForOutputFile()
+        {
+            // Declare a string to "build" using the data from the emp obj
+            string str = this.GetType().Name + "\n";
+            str += base.ToStringForOutputFile() + "\n";
+            // Saves tuition credit as a fixed point for output file.
+            str += $"{GrossSales:F2}\n";
+            str += $"{CommissionRate:F2}\n";
+            // Now return the string
+            return str;
+        }
     }
 }
 

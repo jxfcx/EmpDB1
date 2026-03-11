@@ -35,6 +35,19 @@
 // 2026-03-09 -  Jorge  -    Implemented CreateNewEmployeeRecord() to create new
 //                           employees of different subtypes
 //                           
+// 2026-03-10 -  Jorge  -    Implemented FindEmployeeRecord() to search for an employee
+//                           record by using EmailAddress
+//                           
+// 2026-03-10 -  Jorge  -    Implemented UpdateEmployeeRecord() to update employee
+//                           records and handle subtype-specific pay-fields.
+//                           
+// 2026-03-10 -  Jorge  -    Implemented DeleteEmployeeRecord() to find employee
+//                           records by email and delete them with confirmation.
+//                           
+// 2026-03-10 -  Jorge  -    Added SaveEmployeeDataToOutputFile() to write employee
+//                           records to an output file and copy changes back to the
+//                           input file.
+//                           
 // 2026-03-09 - Michael -    Test 3
 //                           
 //
@@ -44,6 +57,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
+using System.Net;
 using System.Net.Configuration;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
@@ -70,9 +84,15 @@ namespace EmpDB
             // First line of each record will specify employee type
             string employeeType = string.Empty;
 
+
             //
             while ((employeeType = inFile.ReadLine()) != null)
             {
+
+            //skips gaps between students, won't read them
+            if (string.IsNullOrWhiteSpace(employeeType))        // comment out or remove
+                continue;                                       // if reader doesn't execute properly
+
                 string first = inFile.ReadLine();
                 string last = inFile.ReadLine();
                 string ssn = inFile.ReadLine();
@@ -177,7 +197,7 @@ namespace EmpDB
                     case 'r':
                         //[R]un payroll
                         Console.WriteLine("\nYou chose R for Run Payroll");
-                        //RunPayroll();
+                        RunPayroll();
                         break;
 
                     case 'E':
@@ -246,7 +266,7 @@ namespace EmpDB
             {
                 // Employee is NOT in the database - we can add them
                 Console.WriteLine($"Creating new employee record for email: {email}");
-                Console.Write("Enter first name: ");
+                Console.Write("\nEnter first name: ");
                 string firstName = Console.ReadLine();
                 Console.Write("ENTER last name: ");
                 string lastName = Console.ReadLine();
@@ -254,70 +274,76 @@ namespace EmpDB
                 string ssn = Console.ReadLine();
 
                 // Asks for employee type
-                Console.Write("[S]alaried, [H]ourly, [C]ommission, or [B]ase-Plus-Commission");
+                Console.Write("[S]alaried, [H]ourly, [C]ommission, or [B]ase-Plus-Commission: ");
                 char employeeType = GetUserSelection();
 
                 // Salaried
                 if (employeeType == 'S' || employeeType == 's')
                 {
-                    Console.WriteLine("\nEnter weekly salary: ");
+                    Console.Write("\nEnter weekly salary: ");
                     decimal weeklySalary = decimal.Parse(Console.ReadLine());
 
                     // Create new SalariedEmployee object
                     emp = new SalariedEmployee(firstName, lastName, ssn, email, weeklySalary);
                     employees.Add(emp);
-                    Console.WriteLine("New employee record created successfully!");
+                    Console.WriteLine("\nNew employee record created successfully!");
                 }
                 // Hourly
                 else if (employeeType == 'H' || employeeType == 'h')
                 {
-                    Console.WriteLine("\nEnter hourly wage: ");
+                    Console.Write("\nEnter hourly wage: ");
                     decimal hourlyWage = decimal.Parse(Console.ReadLine());
 
-                    Console.WriteLine("\nEnter hours worked: ");
+                    Console.Write("Enter hours worked: ");
                     decimal hoursWorked = decimal.Parse(Console.ReadLine());
 
                     // Create new HourlyEmployee object
                     emp = new HourlyEmployee(firstName, lastName, ssn, email, hourlyWage, hoursWorked);
                     employees.Add(emp);
-                    Console.WriteLine("New employee record created successfully!");
+                    Console.Write("\nNew employee record created successfully!");
                 }
                 // Commission
                 else if (employeeType == 'C' || employeeType == 'c')
                 {
-                    Console.WriteLine("\nEnter gross sales: ");
+                    Console.Write("\nEnter gross sales: ");
                     decimal grossSales = decimal.Parse(Console.ReadLine());
 
-                    Console.WriteLine("\nEnter commission rate: ");
+                    Console.Write("Enter commission rate: ");
                     decimal commissionRate = decimal.Parse(Console.ReadLine());
 
                     // Create new CommissionEmployee object
                     emp = new CommissionEmployee(firstName, lastName, ssn, email, grossSales, commissionRate);
                     employees.Add(emp);
-                    Console.WriteLine("New employee record created successfully!");
+                    Console.WriteLine("\nNew employee record created successfully!");
                 }
                 // Base Plus Commission
                 else if (employeeType == 'B' || employeeType == 'b')
                 {
-                    Console.WriteLine("\nEnter gross sales: ");
+                    Console.Write("\nEnter gross sales: ");
                     decimal grossSales = decimal.Parse(Console.ReadLine());
 
-                    Console.WriteLine("\nEnter commission rate: ");
+                    Console.Write("Enter commission rate: ");
                     decimal commissionRate = decimal.Parse(Console.ReadLine());
 
-                    Console.WriteLine("\nEnter base salary: ");
+                    Console.Write("Enter base salary: ");
                     decimal baseSalary = decimal.Parse(Console.ReadLine());
 
                     // Create new SalariedEmployee object
                     emp = new BasePlusCommissionEmployee(firstName, lastName, ssn, email, grossSales, commissionRate, baseSalary);
                     employees.Add(emp);
-                    Console.WriteLine("New employee record created successfully!");
+                    Console.WriteLine("\nNew employee record created successfully!");
                 }
                 else
                 {
                     // Employee type entered is not valid
                     Console.WriteLine($"ERROR: {employeeType} is not a valid entry");
                 }
+
+            }
+            else
+            {
+                // Employee already exists in database:
+                Console.WriteLine($"ERROR: employee with email {email} already exists. Cannot create duplicate record");
             }
         }
 
@@ -365,17 +391,6 @@ namespace EmpDB
                 if (decimal.TryParse(Console.ReadLine(), out decimal newHours) && newHours >= 0)
                     h.Hours = newHours;
             }
-            else if (emp is CommissionEmployee c)
-            {
-                // Update gross sales
-                Console.Write($"Current gross sales: [{c.GrossSales}] - Update gross sales (Enter to keep current gross sales): ");
-                if (decimal.TryParse(Console.ReadLine(), out decimal newGrossSales) && newGrossSales >= 0)
-                    c.GrossSales = newGrossSales;
-                // Update commission rate
-                Console.Write($"Current commission rate: [{c.CommissionRate}] - Update commission rate (Enter to keep current commission rate): ");
-                if (decimal.TryParse(Console.ReadLine(), out decimal newCommissionRate) && newCommissionRate >= 0)
-                    c.CommissionRate = newCommissionRate;
-            }
             else if (emp is BasePlusCommissionEmployee b)
             {
                 // Update gross sales
@@ -390,6 +405,17 @@ namespace EmpDB
                 Console.Write($"Current base salary: [{b.BaseSalary}] - Update base salary (Enter to keep current base salary): ");
                 if (decimal.TryParse(Console.ReadLine(), out decimal newBaseSalary) && newBaseSalary >= 0)
                     b.BaseSalary = newBaseSalary;
+            }
+            else if (emp is CommissionEmployee c)
+            {
+                // Update gross sales
+                Console.Write($"Current gross sales: [{c.GrossSales}] - Update gross sales (Enter to keep current gross sales): ");
+                if (decimal.TryParse(Console.ReadLine(), out decimal newGrossSales) && newGrossSales >= 0)
+                    c.GrossSales = newGrossSales;
+                // Update commission rate
+                Console.Write($"Current commission rate: [{c.CommissionRate}] - Update commission rate (Enter to keep current commission rate): ");
+                if (decimal.TryParse(Console.ReadLine(), out decimal newCommissionRate) && newCommissionRate >= 0)
+                    c.CommissionRate = newCommissionRate;
             }
 
             // Updated record confirmation
@@ -430,8 +456,26 @@ namespace EmpDB
             }
             else
             {
-                Console.WriteLine($"Employee with emial {email} does not exist.");
+                Console.WriteLine($"Employee with email {email} does not exist.");
             }
+        }
+
+        private void RunPayroll()
+        {
+            decimal totalPayroll = 0;
+            Console.WriteLine("\n*********** Payroll Report ***********\n");
+            
+            foreach (Employee emp in employees)
+            {
+                decimal pay = emp.Earnings();
+
+                Console.WriteLine(emp);
+                Console.WriteLine($"Amount earned: {pay:C}");
+                Console.WriteLine();
+
+                totalPayroll += pay;
+            }
+            Console.WriteLine($"Total payroll: {totalPayroll:C}");
         }
 
         private string EMPLOYEE_OUTPUTFILE = "__EMPLOYEE_OUTPUTFILE__.txt";
@@ -446,7 +490,8 @@ namespace EmpDB
             {
                 //outFile.WriteLine(stu)
                 outFile.Write(emp.ToStringForOutputFile()); // leave alone if u want pretty labels :3
-                Console.WriteLine(emp); // also echo to shell
+                outFile.WriteLine();                        // blank line lol, remove if it crashes or something don't work
+                
             }
             // Close the file reference - release the resource
             outFile.Close();
@@ -473,8 +518,8 @@ namespace EmpDB
 [U]pdate an existing employee record
 [D]elete an existing employee record
 [R]un payroll
-[E]xit      Exit the app - Saving all changes
-[Q]uit      Quit the app - Discard changes
+[E]xit the app - Saving all changes
+[Q]uit the app - Discard changes
 [S]ave all changes and continue the app
 ***********************************************
 User Selection: ");

@@ -34,7 +34,7 @@ namespace EmpDB
         public string SocialSecurityNumber { get; set;  }
         public string EmailAddress { get; set; }
 
-        // three-parameter constructor
+        // four-parameter constructor
         public Employee(string firstName, string lastName,
            string ssn, string email)
         {
@@ -43,13 +43,6 @@ namespace EmpDB
             SocialSecurityNumber = ssn;
             EmailAddress = email;
         }
-
-        // return string representation of Employee object, using properties
-        //public override string ToString() => $"{FirstName} {LastName}\n" +
-        //   $"social security number: {SocialSecurityNumber}\n" +
-        //    $"email address: {EmailAddress}";
-
-
         // abstract method overridden by derived classes
         public abstract decimal Earnings(); // no implementation here
 
@@ -71,12 +64,11 @@ namespace EmpDB
         public virtual string ToStringForOutputFile()
         {
             // declare a string to "build" using the data from the emp obj
-            string str = "\n*********** Employee Record ***********\n";
-            str += $" Type:{this.GetType().Name}\n";   // will show employee type
-            str += $"First:{FirstName}\n";
-            str += $" Last:{LastName}\n";
-            str += $"  SSN:{SocialSecurityNumber}\n";
-            str += $"Email:{EmailAddress}\n";
+            string str = string.Empty; 
+            str += $"{FirstName}\n";
+            str += $"{LastName}\n";
+            str += $"{SocialSecurityNumber}\n";
+            str += $"{EmailAddress}";
 
             // now return the string
             return str;

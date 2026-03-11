@@ -10,7 +10,7 @@
 /////////////////////////////////////////////////////////////////////////////////////
 // Change History
 // Date ------- Developer -- Description
-// 2026-03-02 -  Jorge  -    Imported HourleyEmployee class structure from Dietel
+// 2026-03-02 -  Jorge  -    Imported HourlyEmployee class structure from Deitel
 //                           book example                           
 //                           
 // 2026-03-02 -  Jorge  -    Updated constructor and ToString to include email address
@@ -105,7 +105,7 @@ namespace EmpDB
             string str = base.ToString();
             // Formats Tuitioncredit as currency for readability
             str += $" Hourly Wage:{Wage:C}\n";
-            str += $"Hours Worked:{Hours:C}\n";
+            str += $"Hours Worked:{Hours:F2}\n";
 
             // Now return the string
             return str;
@@ -118,8 +118,8 @@ namespace EmpDB
             string str = this.GetType().Name + "\n";
             str += base.ToStringForOutputFile() + "\n";
             // Saves tuition credit as a fixed point for output file.
-            str += $" Hourly Wage:{Wage:C}\n";
-            str += $"Hours Worked:{Hours:C}\n";
+            str += $"{Wage:F2}\n";
+            str += $"{Hours:F2}\n";
 
             // Now return the string
             return str;

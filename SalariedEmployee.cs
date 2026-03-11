@@ -72,7 +72,7 @@ namespace EmpDB
             // Declare a string to "build" using the data from the emp obj
             string str = base.ToString();
             // Formats Tuitioncredit as currency for readability
-            str += $"weekly salary: {WeeklySalary:C}";
+            str += $"weekly salary: {WeeklySalary:C}\n";
 
             // Now return the string
             return str;
@@ -85,7 +85,7 @@ namespace EmpDB
             string str = this.GetType().Name + "\n";
             str += base.ToStringForOutputFile() + "\n";
             // Saves tuition credit as a fixed point for output file.
-            str += $"weekly salary: {WeeklySalary:C}";
+            str += $"{WeeklySalary:F2}\n";
 
             // Now return the string
             return str;

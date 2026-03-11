@@ -1,7 +1,7 @@
 ﻿/////////////////////////////////////////////////////////////////////////////////////
 // TINFO 200 B, Winter 2026
 // UWTacoma SET, Jorge Francisco-Chavez, Michael Caroll
-// 2026-03-02  - BasePlusComissionEmployee.cs
+// 2026-03-02  - BasePlusCommissionEmployee.cs
 //
 // Description - 
 //
@@ -11,7 +11,7 @@
 // Change History
 // Date ------- Developer -- Description
 // 2026-03-02 -  Jorge  -    Imported BasePlusCommissionEmployee class structure from
-//                           Dietel book example.
+//                           Deitel book example.
 //                           
 // 2026-03-02 -  Jorge  -    Updated constructor and ToString to include email address
 //                           property from Employee base
@@ -65,9 +65,37 @@ namespace EmpDB
         // calculate earnings
         public override decimal Earnings() => BaseSalary + base.Earnings();
 
-        // return string representation of BasePlusCommissionEmployee
-        public override string ToString() =>
-           $"base-salaried {base.ToString()}\nbase salary: {BaseSalary:C}";
+        //// return string representation of BasePlusCommissionEmployee
+        //public override string ToString() =>
+        //   $"base-salaried {base.ToString()}\nbase salary: {BaseSalary:C}";
+        public override string ToString()
+        {
+            // Declare a string to "build" using the data from the emp obj
+            string str = base.ToString();
+            // Formats Tuitioncredit as currency for readability
+            //str += $"Gross sales: {GrossSales:C}\n";
+            //str += $"Commission Rate: {CommissionRate:F2}\n";
+            str += $"Base Salary: {BaseSalary:C}\n";
+
+            // Now return the string
+            return str;
+        }
+
+        // Prints the raw data info to the file for persistent storing
+        public override string ToStringForOutputFile()
+        {
+            // Declare a string to "build" using the data from the emp obj
+            string str = this.GetType().Name + "\n";
+            str += $"{FirstName}\n";
+            str += $"{LastName}\n";
+            str += $"{SocialSecurityNumber}\n";
+            str += $"{EmailAddress}\n";
+            str += $"{GrossSales:F2}\n";
+            str += $"{CommissionRate:F2}\n";
+            str += $"{BaseSalary:F2}\n";
+            return str;
+        }
+
     }
 }
 

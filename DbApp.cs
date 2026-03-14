@@ -3,8 +3,9 @@
 // UWTacoma SET, Jorge Francisco-Chavez, Michael Caroll
 // 2026-03-02  - DbApp.cs
 //
-// Description - 
-//
+// Description - Contains the Dbapp class that runs the console-based employee
+//               database application and manages CRUD operations for Employee
+//               records stored in memory and loaded from a text file.
 /////////////////////////////////////////////////////////////////////////////////////
 
 /////////////////////////////////////////////////////////////////////////////////////
@@ -19,7 +20,7 @@
 // 2026-03-08 -  Jorge  -    Added constructor to read and load employee data from
 //                           an input file at startup.
 //                           
-// 2026-03-08 -  Jorge  -    Implemented ReadEmployeeDataFromInputFile() method to
+// 2026-03-08 - Michael  -    Implemented ReadEmployeeDataFromInputFile() method to
 //                           create Employee subclass objects from the file data and
 //                           add them to the employee list.      
 //
@@ -29,10 +30,10 @@
 // 2026-03-09 -  Jorge  -    Added DisplayMenu() and GetUserSelection() for the
 //                           console menu and user selections.
 //                           
-// 2026-03-09 -  Jorge  -    Created PrintAllRecords() method to display all employee
+// 2026-03-09 - Michael -    Created PrintAllRecords() method to display all employee
 //                           records currently stored in the list
 //                           
-// 2026-03-09 -  Jorge  -    Implemented CreateNewEmployeeRecord() to create new
+// 2026-03-09 - Michael  -    Implemented CreateNewEmployeeRecord() to create new
 //                           employees of different subtypes
 //                           
 // 2026-03-10 -  Jorge  -    Implemented FindEmployeeRecord() to search for an employee
@@ -41,15 +42,20 @@
 // 2026-03-10 -  Jorge  -    Implemented UpdateEmployeeRecord() to update employee
 //                           records and handle subtype-specific pay-fields.
 //                           
-// 2026-03-10 -  Jorge  -    Implemented DeleteEmployeeRecord() to find employee
+// 2026-03-10 - Michael -    Implemented DeleteEmployeeRecord() to find employee
 //                           records by email and delete them with confirmation.
 //                           
 // 2026-03-10 -  Jorge  -    Added SaveEmployeeDataToOutputFile() to write employee
 //                           records to an output file and copy changes back to the
 //                           input file.
+//
+// 2026-03-11 - Michael -    Modified ReadEmployeeDataFromInputFile() to skip blank
+//                           lines in the input file so employee records can have
+//                           gaps between them without breaking the reader
 //                           
-// 2026-03-09 - Michael -    Test 3
-//                           
+// 2026-03-11 - Michael -    Implemented RunPayroll() method to process all Employee
+//                           objects, display their calculated earnings, and output
+//                           the total payroll amount.
 //
 /////////////////////////////////////////////////////////////////////////////////////
 
@@ -67,9 +73,9 @@ namespace EmpDB
     internal class DbApp
     {
         // Raw storage of the employee records. 
-        // 
         private List<Employee> employees = new List<Employee>(); // List to store employee records
 
+        // Starts the app by loading employee data from input file into the list
         public DbApp()
         {
             ReadEmployeeDataFromInputFile();
@@ -77,6 +83,9 @@ namespace EmpDB
 
 
         private const string EMPLOYEE_INPUTFILE = "__EMPLOYEE_INPUTFILE__.txt";
+
+        // Reads employee data from input file and creates the correct
+        // employee subclass objects based on the employee type in the file
         private void ReadEmployeeDataFromInputFile()
         {
             StreamReader inFile = new StreamReader(EMPLOYEE_INPUTFILE);
@@ -84,25 +93,26 @@ namespace EmpDB
             // First line of each record will specify employee type
             string employeeType = string.Empty;
 
-
-            //
             while ((employeeType = inFile.ReadLine()) != null)
             {
 
-            //skips gaps between students, won't read them
-            if (string.IsNullOrWhiteSpace(employeeType))        // comment out or remove
-                continue;                                       // if reader doesn't execute properly
-
+                // Skips gaps between employees, won't read them
+                if (string.IsNullOrWhiteSpace(employeeType))
+                    continue;
+                // Reads the shared employee fields 
                 string first = inFile.ReadLine();
                 string last = inFile.ReadLine();
                 string ssn = inFile.ReadLine();
                 string email = inFile.ReadLine();
 
+
                 if (employeeType == "HourlyEmployee")
                 {
+                    // Reads hourly pay data
                     decimal wage = decimal.Parse(inFile.ReadLine());
                     decimal hours = decimal.Parse(inFile.ReadLine());
 
+                    // Creates a new HourlyEmployee object and adds it to the list
                     Employee hourly = new HourlyEmployee(first, last, ssn, email, wage, hours);
                     employees.Add(hourly);
                 }
@@ -239,8 +249,10 @@ namespace EmpDB
             }
         }
 
+        // Searches for employee record with email address
         private Employee FindEmployeeRecord(out string email)
         {
+            // Prompts user to enter email address
             Console.Write("\nENTER the email address (primary key) to search for: ");
             email = Console.ReadLine();
 
@@ -248,11 +260,13 @@ namespace EmpDB
             {
                 if (email == emp.EmailAddress)
                 {
+                    // Email address was found
                     Console.WriteLine($"\nFOUND email address: {emp.EmailAddress}\n");
                     Console.WriteLine();
                     return emp;
                 }
             }
+            // Returns null if email address wasn't fonud
             Console.WriteLine($"\n{email} NOT FOUND.");
             return null;
         }
@@ -262,6 +276,7 @@ namespace EmpDB
             string email = string.Empty;
             Employee emp = FindEmployeeRecord(out email);
 
+            // Creates new employee if no record exists with email searched
             if (emp == null)
             {
                 // Employee is NOT in the database - we can add them
@@ -347,6 +362,8 @@ namespace EmpDB
             }
         }
 
+        // Updates information on an existing employee record
+        // with the exception of updating employee type or email
         private void UpdateEmployeeRecord()
         {
             string email = string.Empty;
@@ -357,8 +374,9 @@ namespace EmpDB
                 Console.WriteLine("Employee not found.");
                 return;
             }
-
+            // Update first name
             Console.Write($"Current first name: [{emp.FirstName}] - Update first name (ENTER to keep current first name): ");
+
             // Input will replace current value as long as it is not null or white space
             // Otherwise, hitting enter will keep the value as is
             string input = Console.ReadLine();
@@ -390,7 +408,7 @@ namespace EmpDB
                 Console.Write($"Current hours worked: [{h.Hours}] - Update hours worked (Enter to keep current hours worked): ");
                 if (decimal.TryParse(Console.ReadLine(), out decimal newHours) && newHours >= 0)
                     h.Hours = newHours;
-            }
+            }        
             else if (emp is BasePlusCommissionEmployee b)
             {
                 // Update gross sales
@@ -460,21 +478,31 @@ namespace EmpDB
             }
         }
 
+        // Processes payroll by displaying each employee record
+        // calculating earnings, and printing total payroll amount.
         private void RunPayroll()
         {
-            decimal totalPayroll = 0;
+            decimal totalPayroll = 0; // Variable to keep track of the total payroll amount
             Console.WriteLine("\n*********** Payroll Report ***********\n");
-            
+
+            // Loops through every employee currently stored in the list
             foreach (Employee emp in employees)
             {
+                // Calculates the employees earnings, making sure the correct
+                // subclass calculation is used.
                 decimal pay = emp.Earnings();
-
+                
+                // Displays the employee record
                 Console.WriteLine(emp);
+
+                // Displays how much the employee earned this pay period
                 Console.WriteLine($"Amount earned: {pay:C}");
                 Console.WriteLine();
 
+                // Adds each employee's pay to the running payroll total
                 totalPayroll += pay;
             }
+            // Displays the total payroll amount for all employees
             Console.WriteLine($"Total payroll: {totalPayroll:C}");
         }
 
@@ -489,14 +517,18 @@ namespace EmpDB
             foreach (Employee emp in employees)
             {
                 //outFile.WriteLine(stu)
-                outFile.Write(emp.ToStringForOutputFile()); // leave alone if u want pretty labels :3
-                outFile.WriteLine();                        // blank line lol, remove if it crashes or something don't work
-                
+                outFile.Write(emp.ToStringForOutputFile()); 
+                outFile.WriteLine();                        
+
             }
             // Close the file reference - release the resource
             outFile.Close();
 
+            // Copys the output file over to the input file so that saved
+            // changes will persist when the application is closed or 
+            // restarted.
             File.Copy(EMPLOYEE_OUTPUTFILE, EMPLOYEE_INPUTFILE, true);
+            // Confirmation of save
             Console.WriteLine($"\nAll records succesffuly saved to {EMPLOYEE_OUTPUTFILE}.");
         }
         private char GetUserSelection()

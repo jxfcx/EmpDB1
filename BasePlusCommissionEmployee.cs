@@ -3,8 +3,9 @@
 // UWTacoma SET, Jorge Francisco-Chavez, Michael Caroll
 // 2026-03-02  - BasePlusCommissionEmployee.cs
 //
-// Description - 
-//
+// Description - Contains the BasePlusCommissionEmployee class which extends
+//               CommissionEmployee by adding a basse weekly salary in addition
+//               to commission earnings calculated from sales.
 /////////////////////////////////////////////////////////////////////////////////////
 
 /////////////////////////////////////////////////////////////////////////////////////
@@ -16,9 +17,19 @@
 // 2026-03-02 -  Jorge  -    Updated constructor and ToString to include email address
 //                           property from Employee base
 //                              
-// 2026-03-02 - Michael -    
-//                           
+// 2026-03-02 - Michael -    Implemented Earnings() override to calculate pay as base
+//                           salary plus commission earnings.
 //
+// 2026-03-02 - Michael -    Added ToStringForOutPutFile() to write raw data to the
+//                           output file for saving and reloading employee records.
+//                           
+// 
+// 2026-03-05 - Michael -    Rewrote ToString() to display salary in a user-friendly
+//                           format and deleted old ToString() method.
+//
+// 2026-03-07 -  Jorge  -    Updated ToStringForOutPutFile() to print every raw data
+//                           field because Employee type was printing twice, messing
+//                           with the reader when we would try to run the DbApp.
 /////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -62,19 +73,15 @@ namespace EmpDB
             }
         }
 
-        // calculate earnings
+        // calculate earnings by adding base salary to the employee's
+        // earnings.
         public override decimal Earnings() => BaseSalary + base.Earnings();
 
-        //// return string representation of BasePlusCommissionEmployee
-        //public override string ToString() =>
-        //   $"base-salaried {base.ToString()}\nbase salary: {BaseSalary:C}";
         public override string ToString()
         {
             // Declare a string to "build" using the data from the emp obj
             string str = base.ToString();
-            // Formats Tuitioncredit as currency for readability
-            //str += $"Gross sales: {GrossSales:C}\n";
-            //str += $"Commission Rate: {CommissionRate:F2}\n";
+            // Formats BaseSalary as currency for readability
             str += $"Base Salary: {BaseSalary:C}\n";
 
             // Now return the string

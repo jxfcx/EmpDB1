@@ -3,8 +3,10 @@
 // UWTacoma SET, Jorge Francisco-Chavez, Michael Caroll
 // 2026-03-02  - Employee.cs
 //
-// Description - 
-//
+// Description - Contains the abstract Employee base class that stores shared employee
+//               data. Parent class for BasePlusCommissionEmployee, CommissionEmployee,
+//               SalariedEmployee, and HourlyEmployee. Also contains display/output
+//               methods.
 /////////////////////////////////////////////////////////////////////////////////////
 
 /////////////////////////////////////////////////////////////////////////////////////
@@ -16,9 +18,9 @@
 // 2026-03-08 -  Jorge  -    Added EmailAddress property to Employee class and updated
 //                           constructor and ToString                         
 //
-// 2026-03-02 - Michael -    
+// 2026-03-10 - Michael -    Updated ToString() to display shared employee record
+//                           information in a more user-friendly format.
 //                           
-//
 /////////////////////////////////////////////////////////////////////////////////////
 
 

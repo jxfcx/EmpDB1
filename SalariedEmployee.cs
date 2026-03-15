@@ -3,8 +3,8 @@
 // UWTacoma SET, Jorge Francisco-Chavez, Michael Caroll
 // 2026-03-02  - SalariedEmployee.cs
 //
-// Description - 
-//
+// Description - Contains the SalariedEmployee class which extends Employee by adding
+//               weekly salary data used to calculate earnings for salaried employees.
 /////////////////////////////////////////////////////////////////////////////////////
 
 /////////////////////////////////////////////////////////////////////////////////////
@@ -16,8 +16,11 @@
 // 2026-03-02 -  Jorge  -    Updated constructor and ToString to include email address
 //                           property from Employee base
 //                              
-// 2026-03-02 - Michael -    
-//                           
+// 2026-03-02 - Michael -    Added ToStringForOutPutFile() to write raw data to the
+//                           output file for saving and reloading employee records.
+// 
+// 2026-03-05 - Michael -    Rewrote ToString() to display salary in a user-friendly
+//                           format and deleted old ToString() method.
 //
 /////////////////////////////////////////////////////////////////////////////////////
 
@@ -31,7 +34,7 @@ namespace EmpDB
     public class SalariedEmployee : Employee
     {
         private decimal weeklySalary { get; set; }
-        // four-parameter constructor
+        // five-parameter constructor
         public SalariedEmployee(string firstName, string lastName,
            string socialSecurityNumber, string emailAddress, decimal weeklySalary)
            : base(firstName, lastName, socialSecurityNumber, emailAddress)
@@ -61,17 +64,12 @@ namespace EmpDB
         // calculate earnings; override abstract method Earnings in Employee
         public override decimal Earnings() => WeeklySalary;
 
-        //// return string representation of SalariedEmployee object
-        //public override string ToString() =>
-        //   $"salaried employee: {base.ToString()}\n" +
-        //   $"weekly salary: {WeeklySalary:C}";
-
         // Friendly/pretty output statement for the object data - for display to the user
         public override string ToString()
         {
             // Declare a string to "build" using the data from the emp obj
             string str = base.ToString();
-            // Formats Tuitioncredit as currency for readability
+            // Formats WeeklySalary as currency for readability
             str += $"weekly salary: {WeeklySalary:C}\n";
 
             // Now return the string
@@ -84,7 +82,7 @@ namespace EmpDB
             // Declare a string to "build" using the data from the emp obj
             string str = this.GetType().Name + "\n";
             str += base.ToStringForOutputFile() + "\n";
-            // Saves tuition credit as a fixed point for output file.
+            // Saves WeeklySalary as a fixed point for output file.
             str += $"{WeeklySalary:F2}\n";
 
             // Now return the string

@@ -3,8 +3,9 @@
 // UWTacoma SET, Jorge Francisco-Chavez, Michael Caroll
 // 2026-03-02  - CommissionEmployee.cs
 //
-// Description - 
-//
+// Description - Contains the CommissionEmployee class which extends Employee by
+//               adding gross sales and comission rate data used to calculate
+//               earnings for commission-based employees.
 /////////////////////////////////////////////////////////////////////////////////////
 
 /////////////////////////////////////////////////////////////////////////////////////
@@ -16,8 +17,12 @@
 // 2026-03-02 -  Jorge  -    Updated constructor and ToString to include email address
 //                           property from Employee base
 //                              
-// 2026-03-02 - Michael -    
-//                           
+// 2026-03-02 - Michael -    Added ToStringForOutPutFile() to write raw data to the
+//                           output file for saving and reloading employee records.
+//
+// 2026-03-05 - Michael -    Rewrote ToString() to display gross sales and comission
+//                           rate in a user-friendly format and deleted old
+//                           ToString() method.
 //
 /////////////////////////////////////////////////////////////////////////////////////
 
@@ -32,7 +37,7 @@ namespace EmpDB
         private decimal grossSales { get; set; }// gross weekly sales
         private decimal commissionRate { get; set; } // commission percentage
 
-        // five-parameter constructor
+        // six-parameter constructor
         public CommissionEmployee(string firstName, string lastName,
            string socialSecurityNumber, string emailAddress, decimal grossSales,
            decimal commissionRate)
@@ -83,17 +88,11 @@ namespace EmpDB
         // calculate earnings; override abstract method Earnings in Employee
         public override decimal Earnings() => CommissionRate * GrossSales;
 
-        // return string representation of CommissionEmployee object
-        //public override string ToString() =>
-        //   $"commission employee: {base.ToString()}\n" +
-        //   $"gross sales: {GrossSales:C}\n" +
-        //   $"commission rate: {CommissionRate:F2}";
-
         public override string ToString()
         {
             // Declare a string to "build" using the data from the emp obj
             string str = base.ToString();
-            // Formats Tuitioncredit as currency for readability
+            // Formats GrossSales as currency for readability
             str += $"Gross sales: {GrossSales:C}\n";
             str += $"Commission Rate: {CommissionRate:F2}\n";
 
@@ -102,12 +101,13 @@ namespace EmpDB
         }
 
         // Prints the raw data info to the file for persistent storing
+        // so records can be saved and loaded again later.
         public override string ToStringForOutputFile()
         {
             // Declare a string to "build" using the data from the emp obj
             string str = this.GetType().Name + "\n";
             str += base.ToStringForOutputFile() + "\n";
-            // Saves tuition credit as a fixed point for output file.
+            // Saves GrossSales as a fixed point for output file.
             str += $"{GrossSales:F2}\n";
             str += $"{CommissionRate:F2}\n";
             // Now return the string

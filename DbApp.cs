@@ -394,6 +394,7 @@ namespace EmpDB
             {
                 // Update weekly salary
                 Console.Write($"Current weekly salary: [{s.WeeklySalary}] - Update weekly salary (Enter to keep current weekly salary): ");
+                // Tryparse prevents crashes, bad input won't throw exceptions.
                 if (decimal.TryParse(Console.ReadLine(), out decimal newSalary) && newSalary >= 0)
                     s.WeeklySalary = newSalary;
             }

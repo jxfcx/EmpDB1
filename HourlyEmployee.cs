@@ -3,8 +3,9 @@
 // UWTacoma SET, Jorge Francisco-Chavez, Michael Caroll
 // 2026-03-02  - HourlyEmployee.cs
 //
-// Description - 
-//
+// Description - Contains HourlyEmployee class which extends Employee by adding
+//               hourly wage and hours worked, data used to calculate earnings
+//               for hourly employees.
 /////////////////////////////////////////////////////////////////////////////////////
 
 /////////////////////////////////////////////////////////////////////////////////////
@@ -16,8 +17,14 @@
 // 2026-03-02 -  Jorge  -    Updated constructor and ToString to include email address
 //                           property from Employee base
 //                                                     
-// 2026-03-02 - Michael -    
-//                           
+// 2026-03-02 - Michael -    Updated ToString() to display hourly wage and hours
+//                           worked in a user-friendly format
+//
+// 2026-03-02 - Michael -    Added ToStringForOutPutFile() to write raw data to the
+//                           output file for saving and reloading employee records.
+// 
+// 2026-03-05 - Michael -    Rewrote ToString() to display salary in a user-friendly
+//                           format and deleted old ToString() method.                    
 //
 /////////////////////////////////////////////////////////////////////////////////////
 
@@ -32,7 +39,7 @@ namespace EmpDB
         private decimal wage { get; set; } // wage per hour
         private decimal hours { get; set; } // hours worked for the week
 
-        // five-parameter constructor
+        // six-parameter constructor
         public HourlyEmployee(string firstName, string lastName,
            string socialSecurityNumber, string emailAddress, decimal hourlyWage,
            decimal hoursWorked)
@@ -93,17 +100,12 @@ namespace EmpDB
             }
         }
 
-        //// return string representation of HourlyEmployee object
-        //public override string ToString() =>
-        //   $"hourly employee: {base.ToString()}\n" +
-        //   $"hourly wage: {Wage:C}\nhours worked: {Hours:F2}";
-
         // Friendly/pretty output statement for the object data - for display to the user
         public override string ToString()
         {
             // Declare a string to "build" using the data from the emp obj
             string str = base.ToString();
-            // Formats Tuitioncredit as currency for readability
+            // Formats HourlyWage as currency for readability
             str += $" Hourly Wage:{Wage:C}\n";
             str += $"Hours Worked:{Hours:F2}\n";
 
@@ -117,7 +119,7 @@ namespace EmpDB
             // Declare a string to "build" using the data from the emp obj
             string str = this.GetType().Name + "\n";
             str += base.ToStringForOutputFile() + "\n";
-            // Saves tuition credit as a fixed point for output file.
+            // Saves HourlyWage as a fixed point for output file.
             str += $"{Wage:F2}\n";
             str += $"{Hours:F2}\n";
 

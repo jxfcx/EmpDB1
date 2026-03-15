@@ -3,8 +3,8 @@
 // UWTacoma SET, Jorge Francisco-Chavez, Michael Caroll
 // 2026-03-02  - Program.cs
 //
-// Description - 
-//
+// Description - Program file, entry point for the EmpDB application. Instantiates
+//               DBApp and starts the main database loop
 /////////////////////////////////////////////////////////////////////////////////////
 
 /////////////////////////////////////////////////////////////////////////////////////
@@ -12,7 +12,7 @@
 // Date ------- Developer -- Description
 // 2026-03-02 -  Jorge  -    Created Program entry point for EmpDB application.
 //                           
-// 2026-03-02 - Michael -    
+// 2026-03-02 - Jorge -    Instantiated DbApp and connected it to GoDataBases()
 //                           
 //
 /////////////////////////////////////////////////////////////////////////////////////
